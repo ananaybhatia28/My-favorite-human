@@ -25,7 +25,7 @@
       justify-content: center;
       align-items: center;
       box-sizing: border-box;
-      overflow-x: hidden;
+      overflow: hidden; /* Prevents scrollbars if button moves near edge */
     }
 
     .page {
@@ -39,6 +39,7 @@
       text-align: center;
       backdrop-filter: blur(8px);
       animation: fadeIn 0.5s ease-in-out forwards;
+      position: relative; /* Keeps button relative to card */
     }
 
     .active {
@@ -76,7 +77,7 @@
       gap: 20px;
       margin-top: 25px;
       position: relative;
-      min-height: 60px;
+      min-height: 80px;
     }
 
     .btn {
@@ -104,7 +105,8 @@
       background-color: #f1f3f5;
       color: #495057;
       border: 1px solid #ced4da;
-      transition: left 0.15s ease, top 0.15s ease; /* Fast smooth movement */
+      transition: transform 0.15s ease-out; /* Smooth evasion glide */
+      will-change: transform;
     }
 
     /* Page 3 Note Cards */
@@ -249,31 +251,13 @@
       }
 
       const noBtn = document.getElementById("no-btn");
-
-      // Dynamic button dimensions
-      const btnWidth = noBtn.offsetWidth || 100;
-      const btnHeight = noBtn.offsetHeight || 40;
       
-      // Safety gap from window edge
-      const padding = 30; 
+      // Calculate a safe relative offset (-120px to +120px horizontally, -80px to +80px vertically)
+      const randomX = (Math.random() - 0.5) * 240; 
+      const randomY = (Math.random() - 0.5) * 160;
 
-      // Strict boundaries inside visible viewport
-      const minX = padding;
-      const maxX = window.innerWidth - btnWidth - padding;
-      const minY = padding;
-      const maxY = window.innerHeight - btnHeight - padding;
-
-      // Random position clamped strictly within screen bounds
-      const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
-      const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
-
-      // Apply fixed positions so it dodges around on-screen
-      noBtn.style.position = "fixed";
-      noBtn.style.right = "auto";
-      noBtn.style.bottom = "auto";
-      noBtn.style.left = `${Math.max(minX, Math.min(randomX, maxX))}px`;
-      noBtn.style.top = `${Math.max(minY, Math.min(randomY, maxY))}px`;
-      noBtn.style.zIndex = "999";
+      // Use CSS transform to dodge within the card boundaries seamlessly
+      noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
     }
 
     function handleNoClick(e) {
