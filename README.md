@@ -189,8 +189,14 @@
     
     <div class="btn-group">
       <button class="btn btn-yes" onclick="goToPage(2)">YES! 🥰</button>
-      <button id="no-btn" class="btn btn-no" onmouseover="moveNoButton()" onclick="handleNoClick()">No 🥺</button>
-    </div>
+     <button 
+  id="no-btn" 
+  class="btn btn-no" 
+  onmouseover="moveNoButton()" 
+  ontouchstart="moveNoButton(event)" 
+  onclick="handleNoClick(event)">
+  No 🥺
+</button></div>
   </div>
 
   <!-- ================= PAGE 2: CELEBRATION ================= -->
