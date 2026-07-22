@@ -1,4 +1,3 @@
-# My-favorite-human❤️
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,6 +56,11 @@
       margin-bottom: 10px;
     }
 
+    p {
+      color: #495057;
+      line-height: 1.6;
+    }
+
     .gif-box {
       width: 180px;
       height: 180px;
@@ -92,7 +96,7 @@
     }
 
     .btn-yes:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
       background-color: #e03167;
     }
 
@@ -100,7 +104,6 @@
       background-color: #f1f3f5;
       color: #495057;
       border: 1px solid #ced4da;
-      position: relative;
     }
 
     /* Page 3 Note Cards */
@@ -109,22 +112,69 @@
       flex-direction: column;
       gap: 12px;
       margin: 20px 0;
-      text-align: left;
+      text-align: center;
     }
 
     .note-card {
       background: #ffe3e8;
       border-left: 5px solid var(--pink-accent);
-      padding: 12px 16px;
+      padding: 15px 16px;
       border-radius: 10px;
       color: #800020;
-      font-size: 0.95em;
+      font-size: 1.05em;
+      line-height: 1.7;
     }
 
-    .heart-btn {
-      margin-top: 15px;
-      background: #333;
-      color: #fff;
+    /* --- POPUP MODAL STYLES --- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal-card {
+      background: #fff;
+      padding: 25px 20px;
+      border-radius: 20px;
+      max-width: 320px;
+      width: 85%;
+      text-align: center;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+      animation: popupScale 0.3s ease-out;
+    }
+
+    @keyframes popupScale {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-card h2 {
+      color: #d6336c;
+      font-size: 1.5em;
+      margin-top: 0;
+    }
+
+    .modal-card p {
+      color: #495057;
+      font-size: 1em;
+      margin: 15px 0;
+    }
+
+    .btn-modal-close {
+      background-color: var(--pink-accent);
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -133,7 +183,85 @@
   <!-- ================= PAGE 1: THE PROPOSAL ================= -->
   <div id="page1" class="page active">
     <h1 id="p1-title">Will you go on a date with me? 🥺👉👈</h1>
-    <img id="p1-gif" class="gif-box" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ4cmtzM2llZjN1czY3YWYxYnRtMXN4eGZnd2lsMzlzZjBtdW81dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L3X9GvpmP9l0O9lniy/giphy.gif" alt="Cute Bear" />
+    <img id="p1-gif" class="gif-box" src="https://media.giphy.com/media/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute GIF" />
+    
+    <div class="btn-group">
+      <button class="btn btn-yes" onclick="goToPage(2)">YES! 🥰</button>
+      <button class="btn btn-no" onclick="showNoPopup()">No 🥺</button>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 2: CELEBRATION ================= -->
+  <div id="page2" class="page">
+    <h1>YAYYY! I knew you'd say yes! 🎉💖</h1>
+    <img class="gif-box" src="https://media.giphy.com/media/26hpU4a8a58i66h0s/giphy.gif" alt="Celebration GIF" />
+    <p>Get ready for a super special time ahead! ✨</p>
+    
+    <div class="btn-group">
+      <button class="btn btn-yes" onclick="goToPage(3)">Read my note for you 💌</button>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 3: SPECIAL NOTE ================= -->
+  <div id="page3" class="page">
+    <h1>Just for you... 🌹✨</h1>
+    
+    <div class="notes-grid">
+      <div class="note-card">
+        ऐसे तू लगे कि ग़ुलाब है<br>
+        और ऐसे तू लगे कि ग़ुलाब है<br>
+        बागों में दिल के खिलके इन फ़िज़ाओं में छाए हो, हाय
+      </div>
+      <div class="note-card">
+        और वैसे हम तो तेरे ही ग़ुलाम हैं<br>
+        और वैसे हम तो तेरे ही ग़ुलाम हैं<br>
+        बादशाह दिल के तेरी बाज़ी में जो तू चाहे तो ❤️
+      </div>
+    </div>
+
+    <p>Thank you for making my world so bright! 💕</p>
+  </div>
+
+  <!-- ================= POPUP MODAL FOR NO ================= -->
+  <div id="noModal" class="modal-overlay">
+    <div class="modal-card">
+      <h2>Hey! 'No' is not allowed! 😤 ❤️</h2>
+      <p>I know things are tough today, but maybe this will make you smile!</p>
+      <button class="btn-modal-close" onclick="closeNoPopup()">Okay! 💕</button>
+    </div>
+  </div>
+
+  <script>
+    function showNoPopup() {
+      document.getElementById('noModal').style.display = 'flex';
+    }
+
+    function closeNoPopup() {
+      document.getElementById('noModal').style.display = 'none';
+    }
+
+    function goToPage(pageNum) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+
+      // Show requested page
+      document.getElementById('page' + pageNum).classList.add('active');
+
+      // Trigger celebratory confetti on Page 2
+      if (pageNum === 2) {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ4cmtzM2llZjN1czY3YWYxYnRtMXN4eGZnd2lsMzlzZjBtdW81dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/L3X9GvpmP9l0O9lniy/giphy.gif" alt="Cute Bear" />
     <p id="p1-desc" style="color: #666;">I know things are tough today, but maybe this will make you smile?</p>
     
     <div class="btn-group">
