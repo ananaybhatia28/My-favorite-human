@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>A Special Surprise For You 🌹</title>
-  <!-- Confetti library for Page 2 celebration -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
@@ -40,6 +39,8 @@
       backdrop-filter: blur(8px);
       animation: fadeIn 0.5s ease-in-out forwards;
       position: relative;
+      max-height: 80vh;
+      overflow-y: auto;
     }
 
     .active {
@@ -77,7 +78,7 @@
       gap: 20px;
       margin-top: 25px;
       position: relative;
-      min-height: 80px;
+      min-height: 60px;
     }
 
     .btn {
@@ -109,7 +110,7 @@
       will-change: transform;
     }
 
-    /* Page 3 Note Cards */
+    /* Note & Lyrics Cards */
     .notes-grid {
       display: flex;
       flex-direction: column;
@@ -183,7 +184,6 @@
 </head>
 <body>
 
-  <!-- ================= PAGE 1: THE PROPOSAL ================= -->
   <div id="page1" class="page active">
     <h1 id="p1-title">Will you go on a date with me? 🥺👉👈</h1>
     <img id="p1-gif" class="gif-box" src="https://media1.tenor.com/m/XeeJv66u54AAAAAC/tkthao219-bubududu.gif" onerror="this.onerror=null; this.src='https://i.pinimg.com/originals/10/7c/10/107c10b7d8d21c43f721665a5ff79427.gif';" alt="Cute Proposal GIF" />
@@ -201,7 +201,6 @@
     </div>
   </div>
 
-  <!-- ================= PAGE 2: CELEBRATION ================= -->
   <div id="page2" class="page">
     <h1>YAYYY! I knew you'd say yes! 🎉💖</h1>
     <img class="gif-box" src="https://media1.tenor.com/m/_40P9pEpt7wAAAAC/peach-goma.gif" onerror="this.onerror=null; this.src='https://i.pinimg.com/originals/60/a1/3e/60a13e618bd0c8227b4097486f06a096.gif';" alt="Celebration GIF" />
@@ -212,7 +211,6 @@
     </div>
   </div>
 
-  <!-- ================= PAGE 3: SPECIAL NOTE ================= -->
   <div id="page3" class="page">
     <h1>Just for you... 🌹✨</h1>
     
@@ -232,7 +230,6 @@
     <p>Thank you for making my world so bright! 💕</p>
   </div>
 
-  <!-- ================= POPUP MODAL FOR NO ================= -->
   <div id="noModal" class="modal-overlay">
     <div class="modal-card">
       <h2>Hey! 'No' is not allowed! 😤 ❤️</h2>
@@ -282,7 +279,6 @@
       }
 
       if (pageNum === 2) {
-        // Safe confetti execution - won't freeze page transitions if script is blocked
         try {
           if (typeof confetti === 'function') {
             confetti({
