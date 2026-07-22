@@ -86,7 +86,7 @@
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background-color 0.2s ease, transform 0.2s ease;
     }
 
     .btn-yes {
@@ -104,8 +104,7 @@
       background-color: #f1f3f5;
       color: #495057;
       border: 1px solid #ced4da;
-      position: absolute; /* Needed for free movement */
-      right: 20%;
+      transition: left 0.2s ease, top 0.2s ease; /* Smooth dodge animation */
     }
 
     /* Page 3 Note Cards */
@@ -138,7 +137,7 @@
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
+      z-index: 10000; /* Higher than the moving button */
     }
 
     .modal-card {
@@ -189,14 +188,15 @@
     
     <div class="btn-group">
       <button class="btn btn-yes" onclick="goToPage(2)">YES! 🥰</button>
-     <button 
-  id="no-btn" 
-  class="btn btn-no" 
-  onmouseover="moveNoButton()" 
-  ontouchstart="moveNoButton(event)" 
-  onclick="handleNoClick(event)">
-  No 🥺
-</button></div>
+      <button 
+        id="no-btn" 
+        class="btn btn-no" 
+        onmouseover="moveNoButton(event)" 
+        ontouchstart="moveNoButton(event)" 
+        onclick="handleNoClick(event)">
+        No 🥺
+      </button>
+    </div>
   </div>
 
   <!-- ================= PAGE 2: CELEBRATION ================= -->
@@ -240,19 +240,39 @@
   </div>
 
   <script>
-    function moveNoButton() {
+    function moveNoButton(e) {
+      if (e) {
+        e.stopPropagation();
+        if (e.type === 'touchstart') {
+          e.preventDefault(); // Prevents touch devices from triggering a instant click
+        }
+      }
+
       const noBtn = document.getElementById("no-btn");
-      // Generate random coordinates within screen limits
-      const x = Math.floor(Math.random() * (window.innerWidth - 120));
-      const y = Math.floor(Math.random() * (window.innerHeight - 60));
-      
+
+      // Measure button size dynamically
+      const btnWidth = noBtn.offsetWidth || 100;
+      const btnHeight = noBtn.offsetHeight || 40;
+      const padding = 20;
+
+      // Safe bounds inside the visible screen
+      const maxX = Math.max(padding, window.innerWidth - btnWidth - padding);
+      const maxY = Math.max(padding, window.innerHeight - btnHeight - padding);
+
+      const x = Math.floor(Math.random() * (maxX - padding)) + padding;
+      const y = Math.floor(Math.random() * (maxY - padding)) + padding;
+
+      // Force absolute top-layer placement
       noBtn.style.position = "fixed";
+      noBtn.style.right = "auto";
+      noBtn.style.bottom = "auto";
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
+      noBtn.style.zIndex = "999";
     }
 
-    function handleNoClick() {
-      moveNoButton();
+    function handleNoClick(e) {
+      moveNoButton(e);
       showNoPopup();
     }
 
