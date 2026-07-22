@@ -25,7 +25,7 @@
       justify-content: center;
       align-items: center;
       box-sizing: border-box;
-      overflow: hidden; /* Prevents scrollbars if button moves near edge */
+      overflow: hidden;
     }
 
     .page {
@@ -39,7 +39,7 @@
       text-align: center;
       backdrop-filter: blur(8px);
       animation: fadeIn 0.5s ease-in-out forwards;
-      position: relative; /* Keeps button relative to card */
+      position: relative;
     }
 
     .active {
@@ -105,7 +105,7 @@
       background-color: #f1f3f5;
       color: #495057;
       border: 1px solid #ced4da;
-      transition: transform 0.15s ease-out; /* Smooth evasion glide */
+      transition: transform 0.15s ease-out;
       will-change: transform;
     }
 
@@ -186,7 +186,7 @@
   <!-- ================= PAGE 1: THE PROPOSAL ================= -->
   <div id="page1" class="page active">
     <h1 id="p1-title">Will you go on a date with me? 🥺👉👈</h1>
-    <img id="p1-gif" class="gif-box" src="https://i.pinimg.com/originals/10/7c/10/107c10b7d8d21c43f721665a5ff79427.gif" onerror="this.onerror=null; this.src='https://media1.tenor.com/m/XeeJv66u54AAAAAC/tkthao219-bubududu.gif';" alt="Cute Proposal GIF" />
+    <img id="p1-gif" class="gif-box" src="https://media1.tenor.com/m/XeeJv66u54AAAAAC/tkthao219-bubududu.gif" onerror="this.onerror=null; this.src='https://i.pinimg.com/originals/10/7c/10/107c10b7d8d21c43f721665a5ff79427.gif';" alt="Cute Proposal GIF" />
     
     <div class="btn-group">
       <button class="btn btn-yes" onclick="goToPage(2)">YES! 🥰</button>
@@ -204,7 +204,7 @@
   <!-- ================= PAGE 2: CELEBRATION ================= -->
   <div id="page2" class="page">
     <h1>YAYYY! I knew you'd say yes! 🎉💖</h1>
-    <img class="gif-box" src="https://media.tenor.com/m/_40P9pEpt7wAAAAC/peach-goma.gif" onerror="this.onerror=null; this.src='https://i.pinimg.com/originals/60/a1/3e/60a13e618bd0c8227b4097486f06a096.gif';" alt="Celebration GIF" />
+    <img class="gif-box" src="https://media1.tenor.com/m/_40P9pEpt7wAAAAC/peach-goma.gif" onerror="this.onerror=null; this.src='https://i.pinimg.com/originals/60/a1/3e/60a13e618bd0c8227b4097486f06a096.gif';" alt="Celebration GIF" />
     <p>Get ready for a super special time ahead! ✨</p>
     
     <div class="btn-group">
@@ -252,11 +252,9 @@
 
       const noBtn = document.getElementById("no-btn");
       
-      // Calculate a safe relative offset (-120px to +120px horizontally, -80px to +80px vertically)
       const randomX = (Math.random() - 0.5) * 240; 
       const randomY = (Math.random() - 0.5) * 160;
 
-      // Use CSS transform to dodge within the card boundaries seamlessly
       noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
     }
 
@@ -278,14 +276,24 @@
         page.classList.remove('active');
       });
 
-      document.getElementById('page' + pageNum).classList.add('active');
+      const targetPage = document.getElementById('page' + pageNum);
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
 
       if (pageNum === 2) {
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
+        // Safe confetti execution - won't freeze page transitions if script is blocked
+        try {
+          if (typeof confetti === 'function') {
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 }
+            });
+          }
+        } catch (err) {
+          console.warn("Confetti script failed to execute cleanly:", err);
+        }
       }
     }
   </script>
