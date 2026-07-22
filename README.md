@@ -104,7 +104,7 @@
       background-color: #f1f3f5;
       color: #495057;
       border: 1px solid #ced4da;
-      transition: left 0.2s ease, top 0.2s ease; /* Smooth dodge animation */
+      transition: left 0.15s ease, top 0.15s ease; /* Fast smooth movement */
     }
 
     /* Page 3 Note Cards */
@@ -137,7 +137,7 @@
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 10000; /* Higher than the moving button */
+      z-index: 10000;
     }
 
     .modal-card {
@@ -184,14 +184,14 @@
   <!-- ================= PAGE 1: THE PROPOSAL ================= -->
   <div id="page1" class="page active">
     <h1 id="p1-title">Will you go on a date with me? 🥺👉👈</h1>
-    <img id="p1-gif" class="gif-box" src="https://media.giphy.com/media/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute GIF" />
+    <img id="p1-gif" class="gif-box" src="https://i.pinimg.com/originals/10/7c/10/107c10b7d8d21c43f721665a5ff79427.gif" onerror="this.onerror=null; this.src='https://media1.tenor.com/m/XeeJv66u54AAAAAC/tkthao219-bubududu.gif';" alt="Cute Proposal GIF" />
     
     <div class="btn-group">
       <button class="btn btn-yes" onclick="goToPage(2)">YES! 🥰</button>
       <button 
         id="no-btn" 
         class="btn btn-no" 
-        onmouseover="moveNoButton(event)" 
+        onmouseenter="moveNoButton(event)"
         ontouchstart="moveNoButton(event)" 
         onclick="handleNoClick(event)">
         No 🥺
@@ -202,7 +202,7 @@
   <!-- ================= PAGE 2: CELEBRATION ================= -->
   <div id="page2" class="page">
     <h1>YAYYY! I knew you'd say yes! 🎉💖</h1>
-    <img class="gif-box" src="https://media.giphy.com/media/26hpU4a8a58i66h0s/giphy.gif" alt="Celebration GIF" />
+    <img class="gif-box" src="https://media.tenor.com/m/_40P9pEpt7wAAAAC/peach-goma.gif" onerror="this.onerror=null; this.src='https://i.pinimg.com/originals/60/a1/3e/60a13e618bd0c8227b4097486f06a096.gif';" alt="Celebration GIF" />
     <p>Get ready for a super special time ahead! ✨</p>
     
     <div class="btn-group">
@@ -244,30 +244,35 @@
       if (e) {
         e.stopPropagation();
         if (e.type === 'touchstart') {
-          e.preventDefault(); // Prevents touch devices from triggering a instant click
+          e.preventDefault();
         }
       }
 
       const noBtn = document.getElementById("no-btn");
 
-      // Measure button size dynamically
+      // Dynamic button dimensions
       const btnWidth = noBtn.offsetWidth || 100;
       const btnHeight = noBtn.offsetHeight || 40;
-      const padding = 20;
+      
+      // Safety gap from window edge
+      const padding = 30; 
 
-      // Safe bounds inside the visible screen
-      const maxX = Math.max(padding, window.innerWidth - btnWidth - padding);
-      const maxY = Math.max(padding, window.innerHeight - btnHeight - padding);
+      // Strict boundaries inside visible viewport
+      const minX = padding;
+      const maxX = window.innerWidth - btnWidth - padding;
+      const minY = padding;
+      const maxY = window.innerHeight - btnHeight - padding;
 
-      const x = Math.floor(Math.random() * (maxX - padding)) + padding;
-      const y = Math.floor(Math.random() * (maxY - padding)) + padding;
+      // Random position clamped strictly within screen bounds
+      const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+      const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
 
-      // Force absolute top-layer placement
+      // Apply fixed positions so it dodges around on-screen
       noBtn.style.position = "fixed";
       noBtn.style.right = "auto";
       noBtn.style.bottom = "auto";
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
+      noBtn.style.left = `${Math.max(minX, Math.min(randomX, maxX))}px`;
+      noBtn.style.top = `${Math.max(minY, Math.min(randomY, maxY))}px`;
       noBtn.style.zIndex = "999";
     }
 
